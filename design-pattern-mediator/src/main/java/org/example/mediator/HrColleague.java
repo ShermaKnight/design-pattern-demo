@@ -14,10 +14,9 @@ public class HrColleague extends Colleague {
     @Override
     protected void send(String text) {
         if (context == null) {
-            context = new Context();
+            context = new Context(userId);
         }
         context.setTraceId(UUID.randomUUID().toString());
-        context.setUserId(String.valueOf(userId));
         context.setText(text);
         System.out.println("HR发送消息: " + context);
         mediator.relay(this);
@@ -25,7 +24,11 @@ public class HrColleague extends Colleague {
 
     @Override
     protected void receive(Context context) {
-        this.context = context;
-        System.out.println("HR收到消息: " + context);
+        if (this.context == null) {
+            this.context = new Context(userId);
+        }
+        this.context.setTraceId(context.getTraceId());
+        this.context.setText(context.getText());
+        System.out.println("HR收到消息: " + this.context);
     }
 }

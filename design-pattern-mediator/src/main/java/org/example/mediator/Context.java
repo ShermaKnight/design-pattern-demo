@@ -6,6 +6,10 @@ import lombok.Data;
 public class Context {
 
     private String traceId;
-    private String userId;
+    private Long userId;
     private String text;
+
+    public Context(Long userId) {
+        this.userId = userId;
+    }
 }
